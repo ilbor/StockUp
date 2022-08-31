@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import {MdOutlineAssignmentInd} from "react-icons/md";
 import SearchBar from "./SearchBar";
 
+import LoginButton from "../Login";
+import LogoutButton from "../Logout";
+
 const Header = () => {
     return(
         <Wrapper>
@@ -12,9 +15,11 @@ const Header = () => {
             <Container>
                 <SearchBar />
             </Container>
-            <Link to="/sign-in">
-                <MdOutlineAssignmentInd className="sign-in"/>
+            <Link to="/profile">
+                <MdOutlineAssignmentInd className="profile"/>
             </Link>
+            <LoginButton />
+            <LogoutButton />
         </Wrapper>
     );
 };
@@ -41,7 +46,7 @@ padding-bottom: 1.5vh;
     }
 }
 
-.sign-in{
+.profile{
     height: 40px;
     width: 40px;
     color: #3F72AF;
