@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import {MdOutlineAssignmentInd} from "react-icons/md";
 import SearchBar from "./SearchBar";
 
-import LoginButton from "../Login";
-import LogoutButton from "../Logout";
+import LoginButton from "./Login";
+import LogoutButton from "./Logout";
 
 const Header = () => {
     return(

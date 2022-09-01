@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import styled from "styled-components";
+import { NavLink } from "react-router-dom";
 
 const Homepage = () => {
 
@@ -52,7 +53,9 @@ console.log(state);
             <h1>Welcome to Stock Up!</h1>
             {state.map( (ticker) => {
                 return(
-                    <p>{ticker.symbol} {ticker.price}$</p>
+                    <NavLink to={`/stock-details/${ticker.symbol}`} >
+                        <p>{ticker.symbol} {ticker.price}$</p>
+                    </NavLink>
                 )
             })}
         </Wrapper>
