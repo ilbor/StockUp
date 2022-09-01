@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Auth0Provider } from "@auth0/auth0-react";
 import App from "./pages/App";
+import { StocksProvider } from "./components/StocksContext";
 
 import GlobalStyles from "./components/GlobalStyles";
 
@@ -12,7 +13,7 @@ root.render(
   clientId="ZqYiKEpPaAMEwfRnbny5ZgXUbq8Yyew3"
   redirectUri={window.location.origin}
 >
-<GlobalStyles />
-  <App />
+    <GlobalStyles />
+    <App />
 </Auth0Provider>
 );

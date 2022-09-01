@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -31,12 +31,12 @@ const App = () => {
   
   return(
     <BrowserRouter>
-      <Header />
+      <Header setSearch={setSearch} search={search}/>
       <Main>
         <Routes>
           <Route exact path="/" element={<Homepage />}/>
           <Route exact path="/profile" element={<Profile />}/>
-          <Route exact path="/stock-details/:stock" element={<StockDetails />}/>
+          <Route exact path="/stock-details/:stock" element={<StockDetails search={search}/>}/>
         </Routes>
       </Main>
     </BrowserRouter>

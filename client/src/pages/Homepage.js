@@ -1,6 +1,7 @@
-import {useEffect, useState} from "react";
-import styled from "styled-components";
+import { useContext, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import styled from "styled-components";
+// import { StocksContext } from "../components/StocksContext";
 
 const Homepage = () => {
 
@@ -13,7 +14,8 @@ const Homepage = () => {
     };
 
 //FETCH MULTI TICKERS
-const [state, setState] = useState([]);
+// const {stocks, setStocks} = useContext(StocksContext);
+const [stocks, setStocks] = useState([]);
 
 const tickers = ['AAPL', 'GOOG', 'META', 'AMZN', 'TSLA'];
 
@@ -40,18 +42,18 @@ useEffect(() => {
       //stored it in the variable above and then pushed it into the state after the function ran so the state would catch all of the objects.
 
     }
-    setState(forArr);
+    setStocks(forArr);
   };
   fetchTickers();
 }, []);
 
-console.log(state);
+console.log(stocks);
 
     return(
-        state &&
+        stocks &&
         <Wrapper>
             <h1>Welcome to Stock Up!</h1>
-            {state.map( (ticker) => {
+            {stocks.map( (ticker) => {
                 return(
                     <NavLink to={`/stock-details/${ticker.symbol}`} >
                         <p>{ticker.symbol} {ticker.price}$</p>

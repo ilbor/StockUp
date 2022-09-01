@@ -1,15 +1,26 @@
+import { useState } from "react";
 import styled from "styled-components";
 import {BsSearch} from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
-
+const [state, setState] = useState("");
+let navigate = useNavigate();
     return(
         <Wrapper>
-            <input disabled id={"smartSearchDisabled"}
-            type="text"
-            defaultValue={"What are you looking for?"}
-            />
-            <StyledSearchIcon></StyledSearchIcon>
+                <input
+                type="text"
+                placeholder={"What are you looking for?"}
+                onChange = {(e) => {
+                    setState(e.target.value);
+                }}
+                onKeyDown= {(e) => {
+                    if(e.code === "Enter") {
+                        console.log("hello");
+                        navigate(`/stock-details/${state}`);
+                    }
+                }}
+                />            <StyledSearchIcon></StyledSearchIcon>
             <StyledContainer>
             </StyledContainer>
         </Wrapper>
