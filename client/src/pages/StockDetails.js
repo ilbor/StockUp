@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
+import FollowStock from "../components/FollowStock";
 
 const StockDetails = () => {
 let params = useParams();
@@ -37,7 +38,10 @@ const ticker = params.stock;
     return(
         stock.length !== 0 &&
         <Wrapper>
+            <Container>
             <h2>{stock.symbol} {stock.price}$</h2>
+                <FollowStock />
+            </Container>
             {Object.keys(stock.history).map((item) => {
                 return(
                     <>
@@ -51,6 +55,11 @@ const ticker = params.stock;
 }
 
 const Wrapper = styled.div`
-`
+`;
+
+const Container = styled.div`
+display: flex;
+flex-direction: row;
+`;
 
 export default StockDetails;

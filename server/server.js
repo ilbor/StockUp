@@ -3,6 +3,8 @@ const morgan = require("morgan");
 
 const {
   addUser,
+  followTicker,
+  followedTickers,
 } = require("./handlers");
 
 const app = express();
@@ -28,6 +30,8 @@ app.get("/hi", (rep, res) => {
 });
 
 app.post("/api/add-user", addUser);
+app.post("/api/follow-ticker", followTicker);
+app.get("/api/followed-tickers/:email", followedTickers);
 
 app.listen(8000, () => {
     console.log("server launched on port 8000");

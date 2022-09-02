@@ -31,12 +31,12 @@ const App = () => {
   
   return(
     <BrowserRouter>
-      <Header setSearch={setSearch} search={search}/>
+      <Header />
       <Main>
         <Routes>
           <Route exact path="/" element={<Homepage />}/>
           <Route exact path="/profile" element={<Profile />}/>
-          <Route exact path="/stock-details/:stock" element={<StockDetails search={search}/>}/>
+          <Route exact path="/stock-details/:stock" element={<StockDetails />}/>
         </Routes>
       </Main>
     </BrowserRouter>
