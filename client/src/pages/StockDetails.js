@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
 
 import FollowStock from "../components/FollowStock";
 
 const StockDetails = () => {
+    const { user, isAuthenticated, isLoading } = useAuth0();
+const [followedStocks, setFollowedStocks] = useState(null);
 let params = useParams();
 const [stock, setStock] = useState([]);
 const ticker = params.stock;
+
     const options = {
         method: 'GET',
         headers: {
@@ -15,6 +19,18 @@ const ticker = params.stock;
             'X-RapidAPI-Host': 'alpha-vantage.p.rapidapi.com'
         }
     };
+
+    useEffect( () => {
+        if (isAuthenticated === true) {
+            const usedEmail = user.email;
+            fetch(`/api/followed-tickers/${usedEmail}`)
+                .then(response => response.json())
+                .then(data => {
+                    setFollowedStocks(data.arrayOfTickers);
+                })
+                .catch(err => console.error("error: " + err));
+        }
+    }, [isAuthenticated])
 
     useEffect( () => {
         fetch(`https://alpha-vantage.p.rapidapi.com/query?function=TIME_SERIES_DAILY&symbol=${ticker}&outputsize=compact&datatype=json`, options)
@@ -33,14 +49,17 @@ const ticker = params.stock;
             })
             .catch(err => console.error(err));
     }, [ticker]);
-
-
+    
+if (followedStocks !== null) {
+    console.log(followedStocks.includes(stock.symbol));
+}
     return(
+        followedStocks &&
         stock.length !== 0 &&
         <Wrapper>
             <Container>
             <h2>{stock.symbol} {stock.price}$</h2>
-                <FollowStock />
+                {!followedStocks.includes(stock.symbol) && <FollowStock currentStock={stock.symbol} email={user.email}/>}
             </Container>
             {Object.keys(stock.history).map((item) => {
                 return(

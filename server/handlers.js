@@ -17,7 +17,8 @@ const addUser = async (req, res) => {
         if (serverData.length){
             res.status(400).json({status:"error", message: "That email already exists"});
         } else {
-            const userData = await db.collection("users").insertOne(req.body);
+            await db.collection("users").insertOne(req.body);
+            await db.collection("tickers").insertOne({email: req.body.email, tickers: []});
             res.status(200).json({status:"success", user: req.body});
         }
         client.close();
@@ -52,6 +53,7 @@ const followTicker = async (req, res) => {
     }
 }
 
+// For the array
 const followedTickers = async (req, res) => {
     const email = req.params.email;
     try{

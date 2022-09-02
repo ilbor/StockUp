@@ -1,20 +1,21 @@
 import styled from "styled-components"
 
-const FollowStock = () =>{
+const FollowStock = ({currentStock, email}) =>{
     const follow = (ticker) =>{
-        fetch("api/follow-ticker", {
+        fetch("/api/follow-ticker", {
             method: 'POST',
             headers:{
             'Content-type':'application/json',
             },
-            body: JSON.stringify({tickerId: "58bf7fa8-2892-46dd-a0dc-0f95188acea1" , ticker: ticker})
+            body: JSON.stringify({ticker: currentStock, email: email})
         })
         .then((res) => res.json())
-        .then((data) =>{               
-        })                            
+        .then((data) => {
+            console.log(data);
+        })
 }
     return(
-        <StyledButton onClick={() => follow()} >Follow stock</StyledButton>
+        <StyledButton onClick={() => follow(currentStock, email)} >Follow stock</StyledButton>
     )
 }
 
