@@ -5,6 +5,7 @@ const {
   addUser,
   followTicker,
   followedTickers,
+  updateFollowedTickers,
 } = require("./handlers");
 
 const app = express();
@@ -32,6 +33,7 @@ app.get("/hi", (rep, res) => {
 app.post("/api/add-user", addUser);
 app.post("/api/follow-ticker", followTicker);
 app.get("/api/followed-tickers/:email", followedTickers);
+app.patch("/api/update-followed-tickers/:email", updateFollowedTickers);
 
 app.listen(8000, () => {
     console.log("server launched on port 8000");

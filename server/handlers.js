@@ -9,16 +9,18 @@ const client = new MongoClient(MONGO_URI,options);
 
 // Adds user to the Database
 const addUser = async (req, res) => {
+    const email = req.body.email;
+    console.log(req.body);
     try {
         await client.connect();
         const db = client.db("StockUp");
-        const serverData = await db.collection("users").find({ email: req.body.email }).toArray();
+        const serverData = await db.collection("users").findOne({ email: email });
         console.log(serverData);
-        if (serverData.length){
+        if (serverData){
             res.status(400).json({status:"error", message: "That email already exists"});
         } else {
             await db.collection("users").insertOne(req.body);
-            await db.collection("tickers").insertOne({email: req.body.email, tickers: []});
+            await db.collection("tickers").insertOne({email: email, tickers: []});
             res.status(200).json({status:"success", user: req.body});
         }
         client.close();
@@ -30,8 +32,7 @@ const addUser = async (req, res) => {
 
 const followTicker = async (req, res) => {
     try {
-        const {email} = req.body;
-        const {ticker} = req.body;
+        const {email, ticker} = req.body;
         await client.connect();
         const db = client.db("StockUp");
         const findEmail = await db.collection("tickers").find({ email: req.body.email }).toArray();
@@ -53,7 +54,7 @@ const followTicker = async (req, res) => {
     }
 }
 
-// For the array
+// To get an array of followed ticker
 const followedTickers = async (req, res) => {
     const email = req.params.email;
     try{
@@ -61,9 +62,9 @@ const followedTickers = async (req, res) => {
         const db = client.db("StockUp");
         const filteredArray = await db.collection("tickers").find({email:email}).toArray();
         const tickers = filteredArray[0].tickers;
-        const arrayOfTickers = tickers.map(a => a.name);
+        // const arrayOfTickers = tickers.map(a => a.name);
+        res.status(200).json({ status: 200, tickers , message: {success: "the requested data"}  })
         client.close();
-        res.status(200).json({ status: 200, arrayOfTickers , message: {success: "the requested data"}  })
     }
     catch (err){
         client.close();
@@ -71,8 +72,39 @@ const followedTickers = async (req, res) => {
     }
 };
 
+const updateFollowedTickers = async (req, res) => {
+    const email = req.params.email;
+    const name = req.body.name;
+    const amount = req.body.amount;
+    const array = req.body.array;
+    console.log(req.body.array[0].name);
+    try{
+        await client.connect();
+        const db = client.db("StockUp");
+        const filteredArray = await db.collection("tickers").find({email:email}).toArray();
+        let arrayOfTickers = filteredArray[0].tickers;
+        array.forEach( (element) => {
+            arrayOfTickers = arrayOfTickers.map(a => {
+                if (a.name === element.name) {
+                    a.amount = parseInt(element.amount);
+                }
+                return a
+            });
+        })
+        console.log(arrayOfTickers);
+        await db.collection("tickers").update({email:email}, {$set: {tickers: arrayOfTickers}});
+        res.status(200).json({ status: 200, arrayOfTickers , message: {success: "the requested data"}  })
+        client.close();
+    }
+    catch (err){
+        client.close();
+        res.status(400).json({status: 400, error: err.message})
+    }
+}
+
 module.exports = {
     addUser,
     followTicker,
     followedTickers,
+    updateFollowedTickers,
 }

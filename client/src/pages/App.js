@@ -12,14 +12,14 @@ const App = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated === true) {
       fetch("/api/add-user", {
         method: "POST",
         headers: {
             'Content-Type':'application/json',
             'Accept':'application/json'
             },
-        body: JSON.stringify(user)
+        body: JSON.stringify(user),
     })
       .then(res => res.json())
       .then(data => {
@@ -27,9 +27,10 @@ const App = () => {
       })
       .catch(error => console.log(error))
     }
-  }, [isAuthenticated]);
+  }, []);
   
   return(
+    <Wrapper>
     <BrowserRouter>
       <Header />
       <Main>
@@ -37,13 +38,27 @@ const App = () => {
           <Route exact path="/" element={<Homepage />}/>
           <Route exact path="/profile" element={<Profile />}/>
           <Route exact path="/stock-details/:stock" element={<StockDetails />}/>
-        </Routes>
+        </Routes> 
       </Main>
     </BrowserRouter>
+    </Wrapper>
   )
 }
 
 const Main = styled.div`
-`
+`;
+
+const Wrapper = styled.div`
+background-image: url("../Img/Background.png");
+background-repeat: no-repeat;
+background-position: center;
+background-size: cover;
+min-height: 100%;
+min-width: 1024px;
+width: 100%;
+height: auto;
+position: fixed;
+left: 0;
+`;
 
 export default App;

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import { moment } from "moment";
 import styled from "styled-components";
+
 
 import FollowStock from "../components/FollowStock";
 
@@ -26,7 +28,9 @@ const ticker = params.stock;
             fetch(`/api/followed-tickers/${usedEmail}`)
                 .then(response => response.json())
                 .then(data => {
-                    setFollowedStocks(data.arrayOfTickers);
+                    const arrayOfTickers = data.tickers.map(a => a.name);
+                    console.log(data);
+                    setFollowedStocks(arrayOfTickers);
                 })
                 .catch(err => console.error("error: " + err));
         }
@@ -36,6 +40,7 @@ const ticker = params.stock;
         fetch(`https://alpha-vantage.p.rapidapi.com/query?function=TIME_SERIES_DAILY&symbol=${ticker}&outputsize=compact&datatype=json`, options)
             .then(response => response.json())
             .then(response => {
+                console.log(response);
                 const lastKey = Object.keys(response["Time Series (Daily)"])[0];
                 const data = {  information: response["Meta Data"]["1. Information"],
                     symbol: response["Meta Data"]["2. Symbol"],
@@ -50,35 +55,61 @@ const ticker = params.stock;
             .catch(err => console.error(err));
     }, [ticker]);
     
-if (followedStocks !== null) {
-    console.log(followedStocks.includes(stock.symbol));
-}
     return(
         followedStocks &&
         stock.length !== 0 &&
         <Wrapper>
-            <Container>
+            <SymbolContainer>
             <h2>{stock.symbol} {stock.price}$</h2>
                 {!followedStocks.includes(stock.symbol) && <FollowStock currentStock={stock.symbol} email={user.email}/>}
-            </Container>
-            {Object.keys(stock.history).map((item) => {
-                return(
-                    <>
-                    <p>{item}</p>
-                    <p>{stock.history[item]["4. close"]}</p>
-                    </>
-                )
-            })}
+            </SymbolContainer>
+            <HistoryContainer>
+                {Object.keys(stock.history).slice(0, 10).map((item) => {
+                    return(
+                        <>
+                        <Date>{item}</Date>
+                        <Price>{parseFloat(stock.history[item]["4. close"]).toFixed(2)} $</Price>
+                        </>
+                    )
+                })}
+            </HistoryContainer>
         </Wrapper>
     )
 }
 
 const Wrapper = styled.div`
+margin-left: 10vw;
 `;
 
-const Container = styled.div`
+const SymbolContainer = styled.div`
 display: flex;
 flex-direction: row;
+align-items: center;
+margin-bottom: 16px;
+gap: 16px;
+
+h2 {
+    color: var(--color-pale);
+    font-weight: bolder;
+    font-size: 24px;
+}
+`;
+
+const Date = styled.p`
+color: var(--color-white);
+font-weight: bold;
+`;
+
+const Price = styled.p`
+color: var(--color-pale);
+`;
+
+const HistoryContainer = styled.div`
+display: flex;
+flex-direction: column;
+flex-wrap: wrap;
+height: 19vh;
+width: 20vw;
 `;
 
 export default StockDetails;

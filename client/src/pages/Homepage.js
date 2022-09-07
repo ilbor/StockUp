@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 // import { StocksContext } from "../components/StocksContext";
 
@@ -14,7 +14,6 @@ const Homepage = () => {
     };
 
 //FETCH MULTI TICKERS
-// const {stocks, setStocks} = useContext(StocksContext);
 const [stocks, setStocks] = useState([]);
 
 const tickers = ['AAPL', 'GOOG', 'META', 'AMZN', 'TSLA'];
@@ -53,18 +52,50 @@ console.log(stocks);
         stocks &&
         <Wrapper>
             <h1>Welcome to Stock Up!</h1>
+            <Container>
+            <Header>Movers:</Header>
             {stocks.map( (ticker) => {
                 return(
-                    <NavLink to={`/stock-details/${ticker.symbol}`} >
+                    <StyledLink to={`/stock-details/${ticker.symbol}`} >
                         <p>{ticker.symbol} {ticker.price}$</p>
-                    </NavLink>
+                    </StyledLink>
                 )
             })}
+            </Container>
         </Wrapper>
     )
 }
 
 const Wrapper = styled.div`
+h1{
+    color: var(--color-white);
+}
+`;
+
+const StyledLink = styled(Link)`
+color: var(--color-white);
+text-decoration: none;
+width: max-content;
+margin-bottom: 4px;
+
+&:hover {
+    color: var(--color-pale);
+    transition: 0.3s;
+}
+
+p {
+    width: max-content;
+}
+`;
+
+const Container = styled.div`
+margin-left: 5.5vw;
+`;
+
+const Header = styled.p`
+color: var(--color-pale);
+margin-bottom: 16px;
+margin-left: 16px;
 `;
 
 export default Homepage;

@@ -2,11 +2,10 @@ import { createGlobalStyle } from "styled-components";
 
 export default createGlobalStyle`
   :root {
-    --color-white: #F9F7F7;
-    --color-pale-blue: #DBE2EF;
-    --color-light-blue: #3F72AF;
-    --color-dark-blue: #112D4E;
-    --color-buttons: #add8e6;
+    --color-black: #222831;
+    --color-gray: #393E46;
+    --color-pale: #00ADB5;
+    --color-white: #EEEEEE;
     --font-family: 'Poppins', sans-serif;
   }
 
@@ -57,6 +56,10 @@ export default createGlobalStyle`
   button {
     font-family: var(--font-family);
     text-align: center;
+  }
+
+  button {
+    border: none;
   }
 
   p,

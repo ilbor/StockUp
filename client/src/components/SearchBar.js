@@ -10,7 +10,7 @@ let navigate = useNavigate();
         <Wrapper>
                 <input
                 type="text"
-                placeholder={"What are you looking for?"}
+                placeholder={"What stock would you like to search?"}
                 onChange = {(e) => {
                     setState(e.target.value);
                 }}
@@ -20,9 +20,9 @@ let navigate = useNavigate();
                         navigate(`/stock-details/${state}`);
                     }
                 }}
-                />            <StyledSearchIcon></StyledSearchIcon>
-            <StyledContainer>
-            </StyledContainer>
+                />
+            <StyledSearchIcon>
+            </StyledSearchIcon>
         </Wrapper>
     )
 }
@@ -36,34 +36,23 @@ const Wrapper = styled.div`
         border-width: 0;
         padding: 10px;
         font-size: 20px;
-        color:grey;
+        color: var(--color-pale);
+        border-radius: 8px;
+        background-color: var(--color-white);
 
         &:focus{
             outline: none;
         }
     }
     z-index: 1;
-`
-
-const StyledContainer = styled.div`
-    z-index: 3;
-    position:absolute;
-    margin-top: 1vh;
-    border-color: white;
-    left: 35.9vw;
-    display:flex;
-    flex-direction: column;
-    overflow: scroll;
-    overflow-x: hidden;
-    max-height: 25.1vh;
-    width: 31.5vw;
-`
+`;
 
 const StyledSearchIcon = styled(BsSearch)`
     padding:0.7vw;
     position: relative;
     left: -2.5vw;
     top:1.6vh;
-`
+    color: var(--color-pale);
+`;
 
 export default SearchBar;
