@@ -9,6 +9,7 @@ const Profile = () => {
 const [formData, setFormData] = useState(null);
 const [followedStocks, setFollowedStocks] = useState(null);
 const [stocks, setStocks] = useState([]);
+const [total, setTotal] = useState(0);
 
 const handleChange = (key, value) => {
   console.log("hello world");
@@ -36,6 +37,7 @@ const handleSubmit = (e, formData) => {
     // body: JSON.stringify(formData),
     body: JSON.stringify(bodyToPost),
   })
+  window.location.reload();
 };
 
 const options = {
@@ -86,6 +88,12 @@ useEffect(() => {
 
     }
     setStocks(forArr);
+    console.log("hi");
+    for(let i=0; i<stocks.length; i++) {
+      console.log(total);
+      console.log(Number(stocks[i].price)*Number(followedStocks[i].amount))
+      setTotal(total + (Number(stocks[i].price)*Number(followedStocks[i].amount)));
+    }
   };
   if (followedStocks) {
     fetchTickers();
@@ -97,7 +105,7 @@ useEffect(() => {
     return <div>Loading ...</div>;
   }
 
-console.log(formData);
+console.log(total);
   return (
     isAuthenticated ? (
     <Wrapper>
@@ -137,7 +145,7 @@ console.log(formData);
           <button type="submit">Update your stocks</button>
         </Form>
       </Container>
-        <Total>Net worth: <span>10 000$</span></Total>
+        <Total>Net worth: <span>{total} $</span></Total>
       </>
       )}
     </Wrapper>
