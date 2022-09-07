@@ -88,11 +88,11 @@ useEffect(() => {
 
     }
     setStocks(forArr);
-    console.log("hi");
-    for(let i=0; i<stocks.length; i++) {
+    for(let i=0; i<forArr.length; i++) {
+      console.log("hi");
       console.log(total);
-      console.log(Number(stocks[i].price)*Number(followedStocks[i].amount))
-      setTotal(total + (Number(stocks[i].price)*Number(followedStocks[i].amount)));
+      console.log(Number(forArr[i].price)*Number(followedStocks[i].amount))
+      setTotal(total + (Number(forArr[i].price)*Number(followedStocks[i].amount)));
     }
   };
   if (followedStocks) {
