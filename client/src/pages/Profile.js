@@ -89,10 +89,8 @@ useEffect(() => {
     }
     setStocks(forArr);
     for(let i=0; i<forArr.length; i++) {
-      console.log("hi");
-      console.log(total);
-      console.log(Number(forArr[i].price)*Number(followedStocks[i].amount))
-      setTotal(total + (Number(forArr[i].price)*Number(followedStocks[i].amount)));
+      console.log(i);
+      setTotal(total => total + (Number(forArr[i].price)*Number(followedStocks[i].amount)));
     }
   };
   if (followedStocks) {
@@ -145,7 +143,7 @@ console.log(total);
           <button type="submit">Update your stocks</button>
         </Form>
       </Container>
-        <Total>Net worth: <span>{total} $</span></Total>
+        <Total>Net worth: <span>{parseFloat(total).toFixed(2)} $</span></Total>
       </>
       )}
     </Wrapper>
